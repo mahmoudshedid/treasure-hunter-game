@@ -1,0 +1,12 @@
+.board {
+    display: inline-block;
+    width: auto;
+    background-color: #6d6d6d;
+}
+
+.board-cell-content {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #0000dd;
+    font-size: 20pt;
+    font-weight: 600;
+}

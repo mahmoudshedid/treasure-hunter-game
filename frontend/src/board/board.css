@@ -1,0 +1,34 @@
+  .board .board-row {
+    width: 100%;
+    display: flex;
+  }
+
+  .board .board-row:last-child .board-cell {
+    margin-bottom: 2px;
+  }
+
+  .board .board-row .board-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    height: 50px;
+    width: 50px;
+    margin: 2px 0 0 2px;
+    cursor: pointer;
+  }
+
+  .board .board-row .board-cell:last-child {
+    margin-right: 2px;
+  }
+
+  .board .board-row .board-cell.selected {
+    background-color: #aaa;
+  }
+
+  .board .board-row .board-cell {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #0000dd;
+    font-size: 20pt;
+    font-weight: 600;
+  }
