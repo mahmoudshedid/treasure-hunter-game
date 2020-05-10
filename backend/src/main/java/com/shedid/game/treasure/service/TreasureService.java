@@ -83,6 +83,10 @@ public class TreasureService {
         return this.scores;
     }
 
+    public int[][] getBoardMirror() {
+        return this.boardMirror;
+    }
+
     private void setClosestProximity(int row, int column, boolean primary) {
         int numberSet = primary ? 3 : 2;
         if (row >= 0 && row < 4 && this.board[row + 1][column] != -1 && this.board[row + 1][column] != 3) {

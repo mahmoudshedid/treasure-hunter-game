@@ -7,6 +7,9 @@ import com.shedid.game.treasure.models.Position;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.concurrent.TimeUnit;
+
+
 @RestController
 public class TreasureRestController {
     private final GameResult gameResult = new GameResult();
@@ -18,18 +21,25 @@ public class TreasureRestController {
         this.service = service;
     }
 
-    @GetMapping(value="/start-game")
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping(value = "/start-game")
     @ResponseBody
     public Response startGame() {
         this.service.initBoard();
         response.setStatus(true);
         response.setMessage("Start the Game.");
+        gameResult.setBoard(this.service.getBoardMirror());
+        gameResult.setNumberOfTurns(this.service.getNumberOfTurns());
+        gameResult.setTurns(this.service.getTurns());
+        gameResult.setScores(service.getScores());
+        response.setGameResult(gameResult);
         return response;
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(value = "/set-positions", consumes = "application/json", produces = "application/json")
     public Response setPositions(@RequestBody Position position) {
-        if (!service.isValid(position.getRow(), position.getColumn())){
+        if (!service.isValid(position.getRow(), position.getColumn())) {
             response.setStatus(false);
             response.setMessage("Please Enter row and column in correct range.");
             return response;

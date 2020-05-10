@@ -6,7 +6,31 @@
 
 .board-cell-content {
     font-family: Arial, Helvetica, sans-serif;
-    color: #0000dd;
     font-size: 20pt;
     font-weight: 600;
 }
+
+.board-cell-content-dark {
+    color: #4a3434 !important;
+}
+
+.board-cell-content-white {
+    color: white !important;
+}
+
+.board-cell-red {
+    background-color: red !important;
+}
+
+.board-cell-orange {
+    background-color: orange !important;
+}
+
+.board-cell-light {
+    background-color: rgb(253, 201, 148) !important;
+}
+
+.board-cell-more-light {
+    background-color: rgb(255, 230, 204) !important;
+}
+
