@@ -20,6 +20,10 @@ public class TreasureService {
     private boolean turnOver = false;
     private final GameResult gameResult = new GameResult();
 
+    /**
+     * For Start new game
+     * @return GameResult
+     */
     public GameResult startGame() {
         this.topTen.clear();
         this.initBoard();
@@ -32,6 +36,10 @@ public class TreasureService {
         return this.gameResult;
     }
 
+    /**
+     * Get same data if refresh browser or close and open.
+     * @return GameResult
+     */
     public GameResult currentTurn() {
         if (this.board == null) return this.startGame();
         this.gameResult.setBoard(this.boardMirror);
@@ -42,6 +50,12 @@ public class TreasureService {
         return this.gameResult;
     }
 
+    /**
+     * Start play game by giving row and column.
+     * @param row int
+     * @param column int
+     * @return GameResult
+     */
     public GameResult playGame(int row, int column) {
         if (this.move != 3) {
             this.move++;
@@ -62,6 +76,10 @@ public class TreasureService {
         return this.gameResult;
     }
 
+    /**
+     * For start new turn
+     * @return GameResult
+     */
     public GameResult newTurn() {
         for (int[] array : this.boardMirror) {
             Arrays.fill(array, 0);
@@ -77,22 +95,45 @@ public class TreasureService {
         return this.gameResult;
     }
 
+    /**
+     * Check if given row and column is valed.
+     * @param row int
+     * @param column int
+     * @return boolean
+     */
     public boolean isValid(int row, int column) {
         return ((row >= 0 && row < this.row) && (column >= 0 && column < this.row));
     }
 
+    /**
+     * Check if position is used before.
+     * @param row int
+     * @param column int
+     * @return boolean
+     */
     public boolean isUsedBefore(int row, int column) {
         return (this.boardMirror[row][column] > 0 || this.boardMirror[row][column] == -1);
     }
 
+    /**
+     * For get moves in game
+     * @return int
+     */
     public int getMoves() {
         return this.move;
     }
 
+    /**
+     * Get is turn over.
+     * @return boolean
+     */
     public boolean getTurnOver() {
         return this.turnOver;
     }
 
+    /**
+     * Init the game board
+     */
     private void initBoard() {
         this.found = 0;
         this.turns = 0;
@@ -113,6 +154,9 @@ public class TreasureService {
         this.displayBoard();
     }
 
+    /**
+     * Make turn is over to start new turn.
+     */
     private void turnOver() {
         this.topTen.add(this.scores - this.turns);
         this.found = 0;
@@ -122,6 +166,9 @@ public class TreasureService {
         this.initBoard();
     }
 
+    /**
+     * Create 3 treasures in game
+     */
     private void setTreasures() {
         int numberOfPlaces = this.column;
         int limit = 3;
@@ -139,6 +186,12 @@ public class TreasureService {
         }
     }
 
+    /**
+     * Create all closes proximity cells fot treasures. It has a recursive function
+     * @param row int
+     * @param column int
+     * @param primary boolean
+     */
     private void setClosestProximity(int row, int column, boolean primary) {
         int numberSet = primary ? 3 : 2;
         if (row >= 0 && row < 4 && this.board[row + 1][column] != -1 && this.board[row + 1][column] != 3) {
@@ -160,11 +213,19 @@ public class TreasureService {
         }
     }
 
+    /**
+     * Get top ten as sorted and with limit and without duplicates value.
+     * @return List
+     */
     private List<Integer> getTopTen() {
         List<Integer> newTopTen = this.removeDuplicates(this.topTen);
         return newTopTen.stream().sorted(Collections.reverseOrder()).limit(10).collect(Collectors.toList());
     }
 
+    /**
+     * Get random number for treasures in board.
+     * @return int
+     */
     private int randomNumber() {
         Random random = new Random();
         int number;
@@ -173,7 +234,11 @@ public class TreasureService {
         return number;
     }
 
-    // Function to remove duplicates from an ArrayList
+    /**
+     * Function to remove duplicates from an ArrayList
+     * @param list List
+     * @return List
+     */
     private List<Integer> removeDuplicates(List<Integer> list) {
         // Create a new ArrayList
         List<Integer> newList = new ArrayList<>();
@@ -187,6 +252,9 @@ public class TreasureService {
         return newList;
     }
 
+    /**
+     * Display real bored "Please don't tell user (^_^)" this function is exist.
+     */
     private void displayBoard() {
         for (int i = 0; i < this.row; i++) {
             for (int j = 0; j < this.column; j++) {

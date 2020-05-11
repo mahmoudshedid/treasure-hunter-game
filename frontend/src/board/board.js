@@ -23,7 +23,7 @@ const Board = ({ dispatch, fullName, status, message, hasErrors, loading, gameRe
     }
 
     const onSaveClick = () => {
-        console.log(fullNameValue);
+        // console.log(fullNameValue);
         dispatch(fetchFullName(fullNameValue));
     }
 

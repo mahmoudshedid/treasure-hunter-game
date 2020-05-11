@@ -1,13 +1,10 @@
 package com.shedid.game.treasure.controllers;
 
-import com.shedid.game.treasure.models.GameResult;
 import com.shedid.game.treasure.models.Response;
 import com.shedid.game.treasure.service.TreasureService;
 import com.shedid.game.treasure.models.Position;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.concurrent.TimeUnit;
 
 @RestController
 public class TreasureRestController {
