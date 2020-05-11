@@ -21,6 +21,7 @@ public class TreasureService {
     private final GameResult gameResult = new GameResult();
 
     public GameResult startGame() {
+        this.topTen.clear();
         this.initBoard();
         this.gameResult.setBoard(this.boardMirror);
         this.gameResult.setNumberOfTurns(this.numberOfTurns);
