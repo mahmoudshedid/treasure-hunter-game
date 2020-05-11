@@ -1,11 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 import './board.css';
 import Square from './square';
-import { fetchStartGame, fetchResumeGame, fetchPlayGame } from '../actions/game.action';
+import { fetchStartGame, fetchResumeGame, fetchPlayGame, fetchFullName } from '../actions/game.action';
 
-const Board = ({ dispatch, status, message, hasErrors, loading, gameResult }) => {
+const Board = ({ dispatch, fullName, status, message, hasErrors, loading, gameResult }) => {
+
+    const [fullNameValue, setValue] = useState('');
 
     useEffect(() => {
         dispatch(fetchResumeGame());
@@ -19,8 +22,21 @@ const Board = ({ dispatch, status, message, hasErrors, loading, gameResult }) =>
         dispatch(fetchPlayGame(row, column));
     }
 
+    const onSaveClick = () => {
+        console.log(fullNameValue);
+        dispatch(fetchFullName(fullNameValue));
+    }
+
     let keyContainer = 0;
     let keySquare = 0;
+
+    if (!status) return (
+        <div>
+            <TextField value={fullNameValue} id="full-name" label="Full Name" onChange={(e) => setValue(e.target.value)} />
+            <p><Button variant="contained" color="primary" onClick={onSaveClick}>Save</Button></p>
+            <p>{message}</p>
+        </div>
+    )
 
     if (loading) return (
         <div>
@@ -34,6 +50,7 @@ const Board = ({ dispatch, status, message, hasErrors, loading, gameResult }) =>
 
     return (
         <div>
+            <p>{fullName}</p>
             <Button variant="contained" color="primary" onClick={onStartGameClick}>
                 Start New Game
             </Button>
@@ -67,6 +84,7 @@ const Board = ({ dispatch, status, message, hasErrors, loading, gameResult }) =>
 }
 
 const mapStateToProps = state => ({
+    fullName: state.gameData.fullName,
     status: state.gameData.status,
     message: state.gameData.message,
     hasErrors: state.gameData.hasErrors,

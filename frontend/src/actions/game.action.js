@@ -1,3 +1,4 @@
+export const SAVE_FULL_NAME = 'SAVE_FULL_NAME';
 export const START_GAME = 'START_GAME';
 export const START_GAME_SUCCESS = 'START_GAME_SUCCESS'
 export const START_GAME_FAILURE = 'START_GAME_FAILURE';
@@ -7,6 +8,7 @@ export const RESUME_GAME_FAILURE = 'RESUME_GAME_FAILURE';
 export const PLAY_GAME = 'PLAY_GAME';
 export const PLAY_GAME_FAILURE = 'PLAY_GAME_FAILURE';
 
+export const saveFullName = gameResult => ({ type: SAVE_FULL_NAME, payload: gameResult });
 export const startGame = () => ({ type: START_GAME })
 export const startGameSuccess = gameResult => ({ type: START_GAME_SUCCESS, payload: gameResult });
 export const startGameFailure = () => ({ type: START_GAME_FAILURE });
@@ -15,6 +17,27 @@ export const resumeGameSuccess = gameResult => ({ type: RESUME_GAME_SUCCESS, pay
 export const resumeGameFailure = () => ({ type: RESUME_GAME_FAILURE });
 export const playGame = gameResult => ({ type: PLAY_GAME, payload: gameResult });
 export const playGameFailure = () => ({ type: PLAY_GAME_FAILURE });
+
+export function fetchFullName(fullName) {
+    return async dispatch => {
+        try {
+            const response = await fetch('http://localhost:4000/set-full-name', {
+                method: 'POST',
+                body: fullName,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            const data = await response.json()
+
+            dispatch(saveFullName(data))
+        } catch (error) {
+            dispatch(startGameFailure());
+        }
+    }
+}
 
 export function fetchStartGame() {
     return async dispatch => {
