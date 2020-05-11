@@ -4,11 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameResult {
+    private int moves;
     private int turns;
-    private int numberOfTurns;
     private int[][] board;
     private int scores;
     private List<Integer> topTen = new ArrayList<>();
+
+    public int getMoves() {
+        return moves;
+    }
+
+    public void setMoves(int moves) {
+        this.moves = moves;
+    }
 
     public int getTurns() {
         return turns;
@@ -16,14 +24,6 @@ public class GameResult {
 
     public void setTurns(int turns) {
         this.turns = turns;
-    }
-
-    public int getNumberOfTurns() {
-        return numberOfTurns;
-    }
-
-    public void setNumberOfTurns(int numberOfTurns) {
-        this.numberOfTurns = numberOfTurns;
     }
 
     public int[][] getBoard() {

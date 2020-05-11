@@ -14,18 +14,18 @@ public class TreasureService {
     private final int scores = 9;
     private final List<Integer> topTen = new ArrayList<>();
     private int[][] board;
-    private int turns = 0;
-    private int numberOfTurns = 1;
+    private int move = 0;
+    private int turns = 1;
     private int found = 0;
-    private boolean gameOver = false;
+    private boolean turnOver = false;
     private final GameResult gameResult = new GameResult();
 
     public GameResult startGame() {
         this.topTen.clear();
         this.initBoard();
         this.gameResult.setBoard(this.boardMirror);
-        this.gameResult.setNumberOfTurns(this.numberOfTurns);
         this.gameResult.setTurns(this.turns);
+        this.gameResult.setMoves(this.move);
         this.gameResult.setScores(this.scores);
         this.gameResult.setTopTen(this.getTopTen());
 
@@ -33,19 +33,19 @@ public class TreasureService {
     }
 
     public GameResult playGame(int row, int column) {
-        if (this.turns != 3) {
+        if (this.move != 3) {
+            this.move++;
             this.boardMirror[row][column] = this.board[row][column];
             if (this.board[row][column] == -1) this.found++;
-            if (this.found == 3) this.gameOver();
-            this.turns++;
-            if (this.turns == 3) {
-                this.numberOfTurns++;
-                this.turns = 0;
+            if (this.found == 3) this.turnOver();
+            if (this.move == 3) {
+                this.turns++;
+                this.move = 0;
             }
         }
         this.gameResult.setBoard(this.boardMirror);
-        this.gameResult.setNumberOfTurns(this.numberOfTurns);
         this.gameResult.setTurns(this.turns);
+        this.gameResult.setMoves(this.move);
         this.gameResult.setScores(this.scores);
         this.gameResult.setTopTen(this.getTopTen());
 
@@ -56,12 +56,13 @@ public class TreasureService {
         for (int[] array : this.boardMirror) {
             Arrays.fill(array, 0);
         }
+        this.move = 0;
         this.gameResult.setBoard(this.boardMirror);
-        this.gameResult.setNumberOfTurns(this.numberOfTurns);
         this.gameResult.setTurns(this.turns);
+        this.gameResult.setMoves(this.move);
         this.gameResult.setScores(this.scores);
         this.gameResult.setTopTen(this.getTopTen());
-        this.gameOver = false;
+        this.turnOver = false;
 
         return this.gameResult;
     }
@@ -74,25 +75,25 @@ public class TreasureService {
         return (this.boardMirror[row][column] > 0 || this.boardMirror[row][column] == -1);
     }
 
-    public int getTurns() {
-        return this.turns;
+    public int getMoves() {
+        return this.move;
     }
 
-    public boolean getGameOver() {
-        return this.gameOver;
+    public boolean getTurnOver() {
+        return this.turnOver;
     }
 
     private void initBoard() {
         this.found = 0;
-        this.numberOfTurns = 0;
         this.turns = 0;
+        this.move = 0;
 
         this.board = new int[row][column];
         for (int[] array : this.board) {
             Arrays.fill(array, 1);
         }
 
-        if (!this.gameOver) {
+        if (!this.turnOver) {
             for (int[] array : this.boardMirror) {
                 Arrays.fill(array, 0);
             }
@@ -102,12 +103,12 @@ public class TreasureService {
         this.displayBoard();
     }
 
-    private void gameOver() {
-        this.topTen.add(this.scores - this.numberOfTurns);
+    private void turnOver() {
+        this.topTen.add(this.scores - this.turns);
         this.found = 0;
-        this.numberOfTurns = 0;
         this.turns = 0;
-        this.gameOver = true;
+        this.move = 0;
+        this.turnOver = true;
         this.initBoard();
     }
 

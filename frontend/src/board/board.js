@@ -31,6 +31,7 @@ const Board = ({ dispatch, status, message, hasErrors, loading, gameResult }) =>
                 }
             </p>
             <p>{message}</p>
+            <p>You did {gameResult.moves} move and you are complete {gameResult.turns} turns.</p>
             {console.log(gameResult)}
             <div className="board">
                 {

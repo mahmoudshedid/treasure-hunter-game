@@ -32,9 +32,9 @@ public class TreasureRestController {
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(value = "/set-positions", consumes = "application/json", produces = "application/json")
     public Response setPositions(@RequestBody Position position) {
-        if (service.getGameOver()) {
+        if (service.getTurnOver()) {
             response.setStatus(true);
-            response.setMessage("You have '" + (3 - this.service.getTurns()) + "' turns.");
+            response.setMessage("You have '" + (3 - this.service.getMoves()) + "' Moves.");
             response.setGameResult(this.service.newTurn());
             return response;
         }
@@ -50,7 +50,7 @@ public class TreasureRestController {
         }
         response.setGameResult(this.service.playGame(position.getRow(), position.getColumn()));
         response.setStatus(true);
-        response.setMessage("You have '" + (3 - this.service.getTurns()) + "' turns.");
+        response.setMessage("You have '" + (3 - this.service.getMoves()) + "' Moves.");
         return response;
     }
 }
