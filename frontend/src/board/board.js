@@ -23,14 +23,13 @@ const Board = ({ dispatch, fullName, status, message, hasErrors, loading, gameRe
     }
 
     const onSaveClick = () => {
-        // console.log(fullNameValue);
         dispatch(fetchFullName(fullNameValue));
     }
 
     let keyContainer = 0;
     let keySquare = 0;
 
-    if (!status) return (
+    if (fullName === null) return (
         <div>
             <TextField value={fullNameValue} id="full-name" label="Full Name" onChange={(e) => setValue(e.target.value)} />
             <p><Button variant="contained" color="primary" onClick={onSaveClick}>Save</Button></p>
@@ -63,8 +62,7 @@ const Board = ({ dispatch, fullName, status, message, hasErrors, loading, gameRe
                 }
             </p>
             <p>{message}</p>
-            <p>You did {gameResult.moves} move and you are complete {gameResult.turns} turns.</p>
-            {/* {console.log(gameResult)} */}
+            <p>You did {gameResult.moves} move and you have completed {gameResult.turns} turns.</p>
             <div className="board">
                 {
                     (gameResult.board ? gameResult.board.map((row, indexRow) => {

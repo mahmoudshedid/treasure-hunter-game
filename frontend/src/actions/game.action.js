@@ -92,7 +92,7 @@ export function fetchPlayGame(row, column) {
             });
 
             const data = await response.json()
-            // console.log('Call Fetch.')
+
             dispatch(playGame(data))
         } catch (error) {
             dispatch(playGameFailure())
