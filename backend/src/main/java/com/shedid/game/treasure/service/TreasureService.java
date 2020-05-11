@@ -18,43 +18,20 @@ public class TreasureService {
     private int numberOfTurns = 1;
     private int found = 0;
     private boolean gameOver = false;
-    private GameResult gameResult = new GameResult();
+    private final GameResult gameResult = new GameResult();
 
-    public void initBoard() {
-        this.found = 0;
-        this.numberOfTurns = 0;
-        this.turns = 0;
+    public GameResult startGame() {
+        this.initBoard();
+        this.gameResult.setBoard(this.boardMirror);
+        this.gameResult.setNumberOfTurns(this.numberOfTurns);
+        this.gameResult.setTurns(this.turns);
+        this.gameResult.setScores(this.scores);
+        this.gameResult.setTopTen(this.getTopTen());
 
-        this.board = new int[row][column];
-        for (int[] array : this.board) {
-            Arrays.fill(array, 1);
-        }
-
-        if (!this.gameOver) {
-            for (int[] array : this.boardMirror) {
-                Arrays.fill(array, 0);
-            }
-        }
-
-        int numberOfPlaces = this.column;
-        int limit = 3;
-        int mines = 0;
-        while (numberOfPlaces > 0) {
-            int row = randomNumber();
-            int column = randomNumber();
-            if (board[row][column] != -1) {
-                board[row][column] = -1;
-                setClosestProximity(row, column, true);
-                mines++;
-                numberOfPlaces--;
-                if (mines == limit) break;
-            }
-        }
-        System.out.println("[⊕] Start the Game.");
-        this.displayBoard();
+        return gameResult;
     }
 
-    public int[][] playGame(int row, int column) {
+    public GameResult playGame(int row, int column) {
         if (this.turns != 3) {
             this.boardMirror[row][column] = this.board[row][column];
             if (this.board[row][column] == -1) this.found++;
@@ -65,14 +42,19 @@ public class TreasureService {
                 this.turns = 0;
             }
         }
-        return this.boardMirror;
+        this.gameResult.setBoard(this.boardMirror);
+        this.gameResult.setNumberOfTurns(this.numberOfTurns);
+        this.gameResult.setTurns(this.turns);
+        this.gameResult.setScores(this.scores);
+        this.gameResult.setTopTen(this.getTopTen());
+
+        return this.gameResult;
     }
 
     public GameResult newTurn() {
         for (int[] array : this.boardMirror) {
             Arrays.fill(array, 0);
         }
-//        System.out.println(Arrays.deepToString(this.boardMirror));
         this.gameResult.setBoard(this.boardMirror);
         this.gameResult.setNumberOfTurns(this.numberOfTurns);
         this.gameResult.setTurns(this.turns);
@@ -91,33 +73,32 @@ public class TreasureService {
         return (this.boardMirror[row][column] > 0 || this.boardMirror[row][column] == -1);
     }
 
-    public int getNumberOfTurns() {
-        return this.numberOfTurns;
-    }
-
     public int getTurns() {
         return this.turns;
-    }
-
-    public int getScores() {
-        return this.scores;
-    }
-
-    public int[][] getBoardMirror() {
-        return this.boardMirror;
-    }
-
-    public List<Integer> getTopTen() {
-        List<Integer> newTopTen = this.removeDuplicates(this.topTen);
-        return newTopTen.stream().sorted(Collections.reverseOrder()).limit(10).collect(Collectors.toList());
     }
 
     public boolean getGameOver() {
         return this.gameOver;
     }
 
-    public void setGameOver(boolean gameOver) {
-        this.gameOver = gameOver;
+    private void initBoard() {
+        this.found = 0;
+        this.numberOfTurns = 0;
+        this.turns = 0;
+
+        this.board = new int[row][column];
+        for (int[] array : this.board) {
+            Arrays.fill(array, 1);
+        }
+
+        if (!this.gameOver) {
+            for (int[] array : this.boardMirror) {
+                Arrays.fill(array, 0);
+            }
+        }
+        this.setTreasures();
+        System.out.println("[⊕] Start the Game.");
+        this.displayBoard();
     }
 
     private void gameOver() {
@@ -127,6 +108,23 @@ public class TreasureService {
         this.turns = 0;
         this.gameOver = true;
         this.initBoard();
+    }
+
+    private void setTreasures() {
+        int numberOfPlaces = this.column;
+        int limit = 3;
+        int mines = 0;
+        while (numberOfPlaces > 0) {
+            int row = randomNumber();
+            int column = randomNumber();
+            if (this.board[row][column] != -1) {
+                this.board[row][column] = -1;
+                this.setClosestProximity(row, column, true);
+                mines++;
+                numberOfPlaces--;
+                if (mines == limit) break;
+            }
+        }
     }
 
     private void setClosestProximity(int row, int column, boolean primary) {
@@ -150,6 +148,11 @@ public class TreasureService {
         }
     }
 
+    private List<Integer> getTopTen() {
+        List<Integer> newTopTen = this.removeDuplicates(this.topTen);
+        return newTopTen.stream().sorted(Collections.reverseOrder()).limit(10).collect(Collectors.toList());
+    }
+
     private int randomNumber() {
         Random random = new Random();
         int number;
@@ -159,7 +162,7 @@ public class TreasureService {
     }
 
     // Function to remove duplicates from an ArrayList
-    public List<Integer> removeDuplicates(List<Integer> list) {
+    private List<Integer> removeDuplicates(List<Integer> list) {
         // Create a new ArrayList
         List<Integer> newList = new ArrayList<>();
         // Traverse through the first list

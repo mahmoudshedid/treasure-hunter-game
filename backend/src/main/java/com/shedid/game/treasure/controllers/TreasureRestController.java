@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 
 @RestController
 public class TreasureRestController {
-    private final GameResult gameResult = new GameResult();
     private final Response response = new Response();
     private final TreasureService service;
 
@@ -24,15 +23,9 @@ public class TreasureRestController {
     @GetMapping(value = "/start-game")
     @ResponseBody
     public Response startGame() {
-        this.service.initBoard();
         response.setStatus(true);
         response.setMessage("Start the Game.");
-        gameResult.setBoard(this.service.getBoardMirror());
-        gameResult.setNumberOfTurns(this.service.getNumberOfTurns());
-        gameResult.setTurns(this.service.getTurns());
-        gameResult.setScores(service.getScores());
-        gameResult.setTopTen(service.getTopTen());
-        response.setGameResult(gameResult);
+        response.setGameResult(this.service.startGame());
         return response;
     }
 
@@ -55,15 +48,9 @@ public class TreasureRestController {
             response.setMessage("This is a open position please enter other column and row.");
             return response;
         }
-        gameResult.setBoard(this.service.playGame(position.getRow(), position.getColumn()));
-        gameResult.setNumberOfTurns(this.service.getNumberOfTurns());
-        gameResult.setTurns(this.service.getTurns());
-        gameResult.setScores(service.getScores());
-        gameResult.setTopTen(service.getTopTen());
-
+        response.setGameResult(this.service.playGame(position.getRow(), position.getColumn()));
         response.setStatus(true);
         response.setMessage("You have '" + (3 - this.service.getTurns()) + "' turns.");
-        response.setGameResult(gameResult);
         return response;
     }
 }
