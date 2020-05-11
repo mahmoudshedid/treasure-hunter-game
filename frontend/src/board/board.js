@@ -22,7 +22,16 @@ const Board = ({ dispatch, status, message, hasErrors, loading, gameResult }) =>
 
     return (
         <div>
+            <span>Top Ten:</span>
+            <p>
+                {
+                    gameResult.topTen.map((score, index) => {
+                        return <span key={'score_' + index} className="top-score">{score}</span>
+                    })
+                }
+            </p>
             <p>{message}</p>
+            {console.log(gameResult)}
             <div className="board">
                 {
                     (gameResult.board ? gameResult.board.map((row, indexRow) => {

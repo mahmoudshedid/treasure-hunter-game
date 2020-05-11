@@ -1,12 +1,14 @@
 package com.shedid.game.treasure.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameResult {
     private int turns;
     private int numberOfTurns;
     private int[][] board;
-    private List<Integer> scores;
+    private int scores;
+    private List<Integer> topTen = new ArrayList<>();
 
     public int getTurns() {
         return turns;
@@ -32,11 +34,19 @@ public class GameResult {
         this.board = board;
     }
 
-    public List<Integer> getScores() {
+    public int getScores() {
         return scores;
     }
 
-    public void setScores(List<Integer> scores) {
+    public void setScores(int scores) {
         this.scores = scores;
+    }
+
+    public List<Integer> getTopTen() {
+        return topTen;
+    }
+
+    public void setTopTen(List<Integer> topTen) {
+        this.topTen = topTen;
     }
 }

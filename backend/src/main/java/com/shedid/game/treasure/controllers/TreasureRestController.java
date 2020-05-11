@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.TimeUnit;
 
-
 @RestController
 public class TreasureRestController {
     private final GameResult gameResult = new GameResult();
@@ -32,6 +31,7 @@ public class TreasureRestController {
         gameResult.setNumberOfTurns(this.service.getNumberOfTurns());
         gameResult.setTurns(this.service.getTurns());
         gameResult.setScores(service.getScores());
+        gameResult.setTopTen(service.getTopTen());
         response.setGameResult(gameResult);
         return response;
     }
@@ -39,6 +39,12 @@ public class TreasureRestController {
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(value = "/set-positions", consumes = "application/json", produces = "application/json")
     public Response setPositions(@RequestBody Position position) {
+        if (service.getGameOver()) {
+            response.setStatus(true);
+            response.setMessage("You have '" + (3 - this.service.getTurns()) + "' turns.");
+            response.setGameResult(this.service.newTurn());
+            return response;
+        }
         if (!service.isValid(position.getRow(), position.getColumn())) {
             response.setStatus(false);
             response.setMessage("Please Enter row and column in correct range.");
@@ -53,6 +59,7 @@ public class TreasureRestController {
         gameResult.setNumberOfTurns(this.service.getNumberOfTurns());
         gameResult.setTurns(this.service.getTurns());
         gameResult.setScores(service.getScores());
+        gameResult.setTopTen(service.getTopTen());
 
         response.setStatus(true);
         response.setMessage("You have '" + (3 - this.service.getTurns()) + "' turns.");
