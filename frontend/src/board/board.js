@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import './board.css';
 import Square from './square';
 import { fetchStartGame, fetchPlayGame } from '../actions/game.action';
@@ -7,8 +9,12 @@ import { fetchStartGame, fetchPlayGame } from '../actions/game.action';
 const Board = ({ dispatch, status, message, hasErrors, loading, gameResult }) => {
 
     useEffect(() => {
-        dispatch(fetchStartGame());
+        // dispatch(fetchStartGame());
     }, [dispatch]);
+
+    const onStartGameClick = () => {
+        dispatch(fetchStartGame());
+    }
 
     const onClickPlayGame = (row, column) => {
         dispatch(fetchPlayGame(row, column));
@@ -17,12 +23,22 @@ const Board = ({ dispatch, status, message, hasErrors, loading, gameResult }) =>
     let keyContainer = 0;
     let keySquare = 0;
 
-    if (loading) return <p>Loading Game...</p>;
+    if (loading) return (
+        <div>
+            <Button variant="contained" color="primary" onClick={onStartGameClick}>
+                Start New Game
+            </Button>
+            <p>Loading Game...</p>
+        </div>
+    )
     if (hasErrors) return <p>Unable to display game.</p>;
 
     return (
         <div>
-            <span>Top Ten:</span>
+            <Button variant="contained" color="primary" onClick={onStartGameClick}>
+                Start New Game
+            </Button>
+            <p><span>Top Ten:</span></p>
             <p>
                 {
                     gameResult.topTen.map((score, index) => {
@@ -32,7 +48,7 @@ const Board = ({ dispatch, status, message, hasErrors, loading, gameResult }) =>
             </p>
             <p>{message}</p>
             <p>You did {gameResult.moves} move and you are complete {gameResult.turns} turns.</p>
-            {console.log(gameResult)}
+            {/* {console.log(gameResult)} */}
             <div className="board">
                 {
                     (gameResult.board ? gameResult.board.map((row, indexRow) => {
