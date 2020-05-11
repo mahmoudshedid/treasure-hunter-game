@@ -30,6 +30,16 @@ public class TreasureRestController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping(value = "/current-turn")
+    @ResponseBody
+    public Response currentTurn() {
+        response.setStatus(true);
+        response.setMessage("Please resume the game.");
+        response.setGameResult(this.service.currentTurn());
+        return response;
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(value = "/set-positions", consumes = "application/json", produces = "application/json")
     public Response setPositions(@RequestBody Position position) {
         if (service.getTurnOver()) {

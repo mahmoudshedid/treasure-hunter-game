@@ -29,7 +29,17 @@ public class TreasureService {
         this.gameResult.setScores(this.scores);
         this.gameResult.setTopTen(this.getTopTen());
 
-        return gameResult;
+        return this.gameResult;
+    }
+
+    public GameResult currentTurn() {
+        if (this.board == null) return this.startGame();
+        this.gameResult.setBoard(this.boardMirror);
+        this.gameResult.setTurns(this.turns);
+        this.gameResult.setMoves(this.move);
+        this.gameResult.setScores(this.scores);
+        this.gameResult.setTopTen(this.getTopTen());
+        return this.gameResult;
     }
 
     public GameResult playGame(int row, int column) {

@@ -1,15 +1,14 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import './board.css';
 import Square from './square';
-import { fetchStartGame, fetchPlayGame } from '../actions/game.action';
+import { fetchStartGame, fetchResumeGame, fetchPlayGame } from '../actions/game.action';
 
 const Board = ({ dispatch, status, message, hasErrors, loading, gameResult }) => {
 
     useEffect(() => {
-        // dispatch(fetchStartGame());
+        dispatch(fetchResumeGame());
     }, [dispatch]);
 
     const onStartGameClick = () => {
