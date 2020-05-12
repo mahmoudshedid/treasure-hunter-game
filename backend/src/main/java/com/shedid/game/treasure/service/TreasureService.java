@@ -25,6 +25,7 @@ public class TreasureService {
      * @return GameResult
      */
     public GameResult startGame() {
+        this.turnOver = false;
         this.topTen.clear();
         this.initBoard();
         this.gameResult.setBoard(this.boardMirror);
